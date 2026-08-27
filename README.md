@@ -2,8 +2,7 @@
 
 # 🚀 Rocket Orbit Simulator
 
-An interactive rocket launch and orbital insertion simulator built with Python and Streamlit.
-
+An interactive rocket launch and orbital insertion simulator built with HTML CSS and Java
 TRY IT!
 
 https://shreyans800.github.io/Stardance
@@ -40,12 +39,7 @@ Please note that it is NOT accurate, and whilst I tried to include some variable
 
 The trajectory visualization shows the planned flight path as a dotted line, while the completed portion of the flight is represented by a solid line.
 
-## Python Libraries I used 
-
-- Python
-- NumPy
-- Pandas
-- Plotly
+Anecdotes :
 
 This was quite a journey. Firstly, I studied the major variables(except drag) and found that it was similar to projectile motion, which eventually became the basis for the simulation. The only difficulty was using Plotly and Base64 and IO for the simulation, and also integrating it with java frame-by-frame motions. (Yes, a continuous  pre-built video-like projection would not work, so I had to make it move >16 FPS). The drag insertion in the calculations was solved by YouTube videos (Thanks, Google!) and pretty much that's it. Do enjoy adjusting different variables to see the results change!
 
