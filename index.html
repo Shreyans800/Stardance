@@ -4,240 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rocket Launch Simulator</title>
-
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-
 <style>
 *{box-sizing:border-box}
-
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#020712;
-    color:#f1f5f9;
-}
-
-.app{
-    display:flex;
-    min-height:100vh;
-}
-
-.sidebar{
-    width:320px;
-    min-width:320px;
-    background:#07101f;
-    border-right:1px solid #1e293b;
-    padding:22px 18px;
-    position:sticky;
-    top:0;
-    height:100vh;
-    overflow-y:auto;
-}
-
-.sidebar h2{
-    margin:0 0 20px;
-    font-size:22px;
-}
-
-.section{
-    margin-top:20px;
-    padding-top:15px;
-    border-top:1px solid #263449;
-}
-
-.section h3{
-    font-size:15px;
-    margin:0 0 12px;
-}
-
-label{
-    display:block;
-    font-size:13px;
-    color:#cbd5e1;
-    margin:13px 0 6px;
-}
-
-input,select{
-    width:100%;
-    background:#0d1728;
-    color:white;
-    border:1px solid #334155;
-    border-radius:6px;
-    padding:9px;
-    font-size:14px;
-}
-
-input:focus,select:focus{
-    outline:none;
-    border-color:#64748b;
-}
-
-.range-value{
-    font-size:13px;
-    color:#94a3b8;
-    margin-top:4px;
-}
-
-button{
-    width:100%;
-    border:0;
-    border-radius:7px;
-    padding:12px;
-    margin-top:22px;
-    background:#2563eb;
-    color:white;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#1d4ed8;
-}
-
-.main{
-    flex:1;
-    padding:28px 35px 60px;
-    max-width:1500px;
-    margin:auto;
-    width:100%;
-}
-
-h1{
-    font-size:34px;
-    margin:0 0 12px;
-}
-
-.subtitle{
-    color:#94a3b8;
-    margin-bottom:28px;
-}
-
-.hidden{
-    display:none;
-}
-
-.status{
-    padding:12px 15px;
-    border-radius:7px;
-    margin:15px 0;
-    background:#0f1d31;
-    color:#cbd5e1;
-}
-
-.status.success{
-    background:#052e1b;
-    color:#86efac;
-}
-
-.status.warning{
-    background:#332400;
-    color:#fde68a;
-}
-
-.status.error{
-    background:#3b0a0a;
-    color:#fca5a5;
-}
-
-.metrics{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin:18px 0 30px;
-}
-
-.metric{
-    background:#07101f;
-    border:1px solid #1e293b;
-    border-radius:9px;
-    padding:17px;
-}
-
-.metric-title{
-    font-size:13px;
-    color:#94a3b8;
-    margin-bottom:8px;
-}
-
-.metric-value{
-    font-size:23px;
-    font-weight:bold;
-}
-
-.three{
-    grid-template-columns:repeat(3,1fr);
-}
-
-.chart{
-    background:#020f20;
-    border:1px solid #172337;
-    border-radius:8px;
-    margin:15px 0 28px;
-    min-height:420px;
-}
-
-.animation-container{
-    position:relative;
-}
-
-details{
-    background:#07101f;
-    border:1px solid #1e293b;
-    border-radius:7px;
-    margin:9px 0;
-    padding:14px 16px;
-}
-
-summary{
-    cursor:pointer;
-    font-weight:bold;
-}
-
-details p{
-    color:#cbd5e1;
-    line-height:1.6;
-}
-
-.formula{
-    background:#020712;
-    padding:13px;
-    border-radius:6px;
-    margin:10px 0;
-    font-family:Georgia,serif;
-    font-size:17px;
-    text-align:center;
-    overflow-x:auto;
-}
-
-@media(max-width:1000px){
-    .metrics{grid-template-columns:repeat(2,1fr)}
-    .sidebar{
-        width:280px;
-        min-width:280px;
-    }
-}
-
-@media(max-width:700px){
-    .app{display:block}
-    .sidebar{
-        width:100%;
-        min-width:100%;
-        position:relative;
-        height:auto;
-    }
-    .metrics,.three{grid-template-columns:1fr}
-    .main{padding:20px}
-}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#020712;color:#f1f5f9}
+.app{display:flex;min-height:100vh}
+.sidebar{width:320px;min-width:320px;background:#07101f;border-right:1px solid #1e293b;padding:22px 18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar h2{margin:0 0 20px;font-size:22px}
+.section{margin-top:20px;padding-top:15px;border-top:1px solid #263449}
+.section h3{font-size:15px;margin:0 0 12px}
+label{display:block;font-size:13px;color:#cbd5e1;margin:13px 0 6px}
+input,select{width:100%;background:#0d1728;color:white;border:1px solid #334155;border-radius:6px;padding:9px;font-size:14px}
+input:focus,select:focus{outline:none;border-color:#64748b}
+.range-value{font-size:13px;color:#94a3b8;margin-top:4px}
+button{width:100%;border:0;border-radius:7px;padding:12px;margin-top:22px;background:#2563eb;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+button:hover{background:#1d4ed8}
+button:disabled{opacity:.6;cursor:not-allowed}
+.hidden{display:none}
+.status{padding:12px 15px;border-radius:7px;margin:15px 0;background:#0f1d31;color:#cbd5e1}
+.status.success{background:#052e1b;color:#86efac}
+.status.warning{background:#332400;color:#fde68a}
+.status.error{background:#3b0a0a;color:#fca5a5}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 30px}
+.metric{background:#07101f;border:1px solid #1e293b;border-radius:9px;padding:17px}
+.metric-title{font-size:13px;color:#94a3b8;margin-bottom:8px}
+.metric-value{font-size:23px;font-weight:bold}
+.three{grid-template-columns:repeat(3,1fr)}
+.chart{background:#020f20;border:1px solid #172337;border-radius:8px;margin:15px 0 28px;min-height:420px}
+.main{flex:1;padding:28px 35px 60px;max-width:1500px;margin:auto;width:100%}
+h1{font-size:34px;margin:0 0 12px}
+.subtitle{color:#94a3b8;margin-bottom:28px}
+details{background:#07101f;border:1px solid #1e293b;border-radius:7px;margin:9px 0;padding:14px 16px}
+summary{cursor:pointer;font-weight:bold}
+details p{color:#cbd5e1;line-height:1.6}
+.formula{background:#020712;padding:13px;border-radius:6px;margin:10px 0;font-family:Georgia,serif;font-size:17px;text-align:center;overflow-x:auto}
+@media(max-width:1000px){.metrics{grid-template-columns:repeat(2,1fr)}.sidebar{width:280px;min-width:280px}}
+@media(max-width:700px){.app{display:block}.sidebar{width:100%;min-width:100%;position:relative;height:auto}.metrics,.three{grid-template-columns:1fr}.main{padding:20px}}
 </style>
 </head>
-
 <body>
 
 <div class="app">
 
 <aside class="sidebar">
-
 <h2>Rocket Parameters</h2>
 
 <div class="section">
@@ -304,7 +113,6 @@ details p{
 </div>
 
 <button id="launch">Launch Simulation</button>
-
 </aside>
 
 <main class="main">
@@ -425,9 +233,7 @@ applying the laws of physics over small time intervals.
 <details>
 <summary>1. Engine Thrust</summary>
 <p>Rocket engine thrust uses both momentum thrust and pressure thrust.</p>
-<div class="formula">
-T = ṁVₑ + (pₑ − pₐ)Aₑ
-</div>
+<div class="formula">T = ṁVₑ + (pₑ − pₐ)Aₑ</div>
 <p>
 ṁ = propellant mass flow rate<br>
 Vₑ = exhaust velocity<br>
@@ -435,50 +241,32 @@ pₑ = nozzle exit pressure<br>
 pₐ = atmospheric pressure<br>
 Aₑ = nozzle exit area
 </p>
-<div class="formula">
-Vₑ = Isp g₀
-</div>
-<div class="formula">
-T = ṁIspg₀ + (pₑ − pₐ)Aₑ
-</div>
+<div class="formula">Vₑ = Isp g₀</div>
+<div class="formula">T = ṁIspg₀ + (pₑ − pₐ)Aₑ</div>
 </details>
 
 <details>
 <summary>2. Gravity</summary>
 <p>Gravity changes with altitude.</p>
-<div class="formula">
-g(h) = g₀ (Rₑ / (Rₑ + h))²
-</div>
+<div class="formula">g(h) = g₀ (Rₑ / (Rₑ + h))²</div>
 </details>
 
 <details>
 <summary>3. Atmospheric Density</summary>
-<p>
-The simulator calculates temperature, pressure, air density and speed of sound.
-</p>
-<div class="formula">
-ρ = P / RT
-</div>
+<p>The simulator calculates temperature, pressure, air density and speed of sound.</p>
+<div class="formula">ρ = P / RT</div>
 </details>
 
 <details>
 <summary>4. Atmospheric Drag</summary>
-<div class="formula">
-D = ½ρv²CᴅA
-</div>
-<div class="formula">
-Dₓ = −D(vₓ/v)
-</div>
-<div class="formula">
-Dᵧ = −D(vᵧ/v)
-</div>
+<div class="formula">D = ½ρv²CᴅA</div>
+<div class="formula">Dₓ = −D(vₓ/v)</div>
+<div class="formula">Dᵧ = −D(vᵧ/v)</div>
 </details>
 
 <details>
 <summary>5. Launch Angle and Force Components</summary>
-<p>
-0° = horizontal, 45° = 45° above horizontal, 90° = vertical.
-</p>
+<p>0° = horizontal, 45° = 45° above horizontal, 90° = vertical.</p>
 <div class="formula">Tₓ = T cos(θ)</div>
 <div class="formula">Tᵧ = T sin(θ)</div>
 </details>
@@ -511,12 +299,8 @@ Dᵧ = −D(vᵧ/v)
 
 <details>
 <summary>10. Orbital Velocity</summary>
-<div class="formula">
-vₒᵣᵦ = √(μ / (Rₑ + h))
-</div>
-<p>
-This is the ideal circular orbital speed at the current altitude.
-</p>
+<div class="formula">vₒᵣᵦ = √(μ / (Rₑ + h))</div>
+<p>This is the ideal circular orbital speed at the current altitude.</p>
 </details>
 
 <details>
@@ -534,83 +318,54 @@ This is the ideal circular orbital speed at the current altitude.
 10. Calculate Mach number, dynamic pressure and orbital velocity.<br>
 11. Store results and repeat.
 </p>
-<div class="formula">
-Thrust + Drag + Gravity → Acceleration → Velocity → Position
-</div>
+<div class="formula">Thrust + Drag + Gravity → Acceleration → Velocity → Position</div>
 </details>
 
 </div>
-
 </main>
 </div>
 
 <script>
+const G0=9.80665;
+const R_EARTH=6371000;
+const MU_EARTH=3.986004418e14;
+const R_AIR=287.05;
+const GAMMA=1.4;
 
-const G0 = 9.80665;
-const R_EARTH = 6371000.0;
-const MU_EARTH = 3.986004418e14;
-const R_AIR = 287.05;
-const GAMMA = 1.4;
+const $=id=>document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-
-$("angle").addEventListener("input", () => {
-    $("angleValue").textContent = $("angle").value;
+$("angle").addEventListener("input",()=>{
+    $("angleValue").textContent=$("angle").value;
 });
 
 function atmosphere(h){
-
-    h = Math.max(0,h);
-
+    h=Math.max(0,h);
     let T,P;
 
-    if(h < 11000){
-
-        T = 288.15 - 0.0065*h;
-        P = 101325*Math.pow(T/288.15,5.25588);
-
-    }else if(h < 20000){
-
-        T = 216.65;
-        P = 22632.06*Math.exp(
-            -G0*(h-11000)/(R_AIR*T)
-        );
-
-    }else if(h < 32000){
-
-        T = 216.65 + 0.001*(h-20000);
-        P = 5474.89*Math.pow(
-            T/216.65,
-            -G0/(0.001*R_AIR)
-        );
-
-    }else if(h < 47000){
-
-        T = 228.65 + 0.0028*(h-32000);
-        P = 868.02*Math.pow(
-            T/228.65,
-            -G0/(0.0028*R_AIR)
-        );
-
+    if(h<11000){
+        T=288.15-0.0065*h;
+        P=101325*Math.pow(T/288.15,5.25588);
+    }else if(h<20000){
+        T=216.65;
+        P=22632.06*Math.exp(-G0*(h-11000)/(R_AIR*T));
+    }else if(h<32000){
+        T=216.65+0.001*(h-20000);
+        P=5474.89*Math.pow(T/216.65,-G0/(0.001*R_AIR));
+    }else if(h<47000){
+        T=228.65+0.0028*(h-32000);
+        P=868.02*Math.pow(T/228.65,-G0/(0.0028*R_AIR));
     }else{
-
-        T = 270.65;
-        P = 110.0*Math.exp(
-            -(h-47000)/7000
-        );
+        T=270.65;
+        P=110*Math.exp(-(h-47000)/7000);
     }
 
-    const rho = P/(R_AIR*T);
-    const sound = Math.sqrt(GAMMA*R_AIR*T);
-
     return {
-        rho,
+        rho:P/(R_AIR*T),
         pressure:P,
         temperature:T,
-        sound
+        sound:Math.sqrt(GAMMA*R_AIR*T)
     };
 }
-
 
 function simulate(params){
 
@@ -627,110 +382,95 @@ function simulate(params){
         target,
         pExit,
         aExit
-    } = params;
+    }=params;
 
-    let mass = dry + fuel0;
-    let fuel = fuel0;
+    let mass=dry+fuel0;
+    let fuel=fuel0;
+    let h=0;
+    let vx=0;
+    let vy=0;
+    let x=0;
 
-    let h = 0;
-    let vx = 0;
-    let vy = 0;
-    let x = 0;
+    const rows=[];
+    const ve=isp*G0;
+    const mdot=fuel0/burn;
 
-    const rows = [];
+    const angleRad=angle*Math.PI/180;
+    const txDir=Math.cos(angleRad);
+    const tyDir=Math.sin(angleRad);
 
-    const ve = isp*G0;
-    const mdot = fuel0/burn;
+    let impulse=0;
 
-    const angleRad = angle*Math.PI/180;
+    const totalSteps=Math.floor(simTime/dt)+1;
 
-    const txDir = Math.cos(angleRad);
-    const tyDir = Math.sin(angleRad);
+    for(let step=0;step<totalSteps;step++){
 
-    let impulse = 0;
-
-    const totalSteps = Math.floor(simTime/dt)+1;
-
-    for(let step=0; step<totalSteps; step++){
-
-        const t = step*dt;
-
-        const atm = atmosphere(h);
+        const t=step*dt;
+        const atm=atmosphere(h);
 
         let thrust;
 
-        if(fuel > 0 && t < burn){
+        if(fuel>0&&t<burn){
 
-            thrust = Math.max(
+            thrust=Math.max(
                 0,
-                mdot*ve +
-                (pExit-atm.pressure)*aExit
+                mdot*ve+(pExit-atm.pressure)*aExit
             );
 
-            fuel -= Math.min(mdot*dt,fuel);
-            mass = dry+fuel;
+            fuel-=Math.min(mdot*dt,fuel);
+            mass=dry+fuel;
 
         }else{
 
-            thrust = 0;
-            mass = dry;
+            thrust=0;
+            mass=dry;
         }
 
-        const g =
-            G0*Math.pow(
-                R_EARTH/(R_EARTH+h),
-                2
-            );
+        const g=G0*Math.pow(
+            R_EARTH/(R_EARTH+h),
+            2
+        );
 
-        let v = Math.hypot(vx,vy);
-
-        const q = 0.5*atm.rho*v*v;
-
-        const drag = q*cd*area;
+        let v=Math.hypot(vx,vy);
+        const q=0.5*atm.rho*v*v;
+        const drag=q*cd*area;
 
         let dx=0;
         let dy=0;
 
         if(v>0){
-
-            dx = -drag*vx/v;
-            dy = -drag*vy/v;
+            dx=-drag*vx/v;
+            dy=-drag*vy/v;
         }
 
-        const thrustX = thrust*txDir;
-        const thrustY = thrust*tyDir;
+        const thrustX=thrust*txDir;
+        const thrustY=thrust*tyDir;
 
-        const ax = (thrustX+dx)/mass;
+        const ax=(thrustX+dx)/mass;
+        const ay=(thrustY+dy-mass*g)/mass;
 
-        const ay =
-            (thrustY+dy-mass*g)/mass;
+        const acc=Math.hypot(ax,ay);
 
-        const acc = Math.hypot(ax,ay);
+        vx+=ax*dt;
+        vy+=ay*dt;
 
-        vx += ax*dt;
-        vy += ay*dt;
-
-        x += vx*dt;
-        h += vy*dt;
+        x+=vx*dt;
+        h+=vy*dt;
 
         if(h<0){
-
             h=0;
             vy=0;
         }
 
-        v = Math.hypot(vx,vy);
+        v=Math.hypot(vx,vy);
 
-        const mach =
-            atm.sound>0 ? v/atm.sound : 0;
+        const mach=atm.sound>0?v/atm.sound:0;
 
-        const orbitalVelocity =
-            Math.sqrt(
-                MU_EARTH/
-                (R_EARTH+h)
-            );
+        const orbitalVelocity=Math.sqrt(
+            MU_EARTH/(R_EARTH+h)
+        );
 
-        impulse += thrust*dt;
+        impulse+=thrust*dt;
 
         rows.push({
             time:t,
@@ -760,10 +500,7 @@ function simulate(params){
             y:h
         });
 
-        if(
-            (h<=0 && t>5 && vy<0) ||
-            h>=target
-        ){
+        if((h<=0&&t>5&&vy<0)||h>=target){
             break;
         }
     }
@@ -776,26 +513,17 @@ function simulate(params){
     };
 }
 
-
 function maxOf(data,key){
-
-    return Math.max(
-        ...data.map(r=>r[key])
-    );
+    return Math.max(...data.map(r=>r[key]));
 }
 
-
 function formatKm(v){
-
     return (v/1000).toFixed(2)+" km";
 }
 
-
 function formatVelocity(v){
-
     return (v/1000).toFixed(2)+" km/s";
 }
-
 
 function layoutBase(xTitle,yTitle){
 
@@ -803,15 +531,8 @@ function layoutBase(xTitle,yTitle){
         height:450,
         paper_bgcolor:"#020f20",
         plot_bgcolor:"#020f20",
-        font:{
-            color:"#f1f5f9"
-        },
-        margin:{
-            l:65,
-            r:25,
-            t:35,
-            b:60
-        },
+        font:{color:"#f1f5f9"},
+        margin:{l:65,r:25,t:35,b:60},
         xaxis:{
             title:xTitle,
             gridcolor:"rgba(255,255,255,0.10)",
@@ -822,240 +543,155 @@ function layoutBase(xTitle,yTitle){
             gridcolor:"rgba(255,255,255,0.10)",
             zerolinecolor:"rgba(255,255,255,0.25)"
         },
-        legend:{
-            orientation:"h"
-        }
+        legend:{orientation:"h"}
     };
 }
 
-
 function renderCharts(rows,params){
 
-    const time = rows.map(r=>r.time);
-    const altitude = rows.map(r=>r.altitude/1000);
-    const velocity = rows.map(r=>r.velocity/1000);
-    const vx = rows.map(r=>r.velocity_x/1000);
-    const vy = rows.map(r=>r.velocity_y/1000);
-    const acceleration = rows.map(r=>r.acceleration/G0);
-    const mass = rows.map(r=>r.mass);
-    const fuel = rows.map(r=>r.fuel);
-    const thrust = rows.map(r=>r.thrust/1000);
-    const drag = rows.map(r=>r.drag/1000);
-    const mach = rows.map(r=>r.mach);
-    const x = rows.map(r=>r.x/1000);
-    const y = rows.map(r=>r.y/1000);
+    const time=rows.map(r=>r.time);
+    const altitude=rows.map(r=>r.altitude/1000);
+    const velocity=rows.map(r=>r.velocity/1000);
+    const vx=rows.map(r=>r.velocity_x/1000);
+    const vy=rows.map(r=>r.velocity_y/1000);
+    const acceleration=rows.map(r=>r.acceleration/G0);
+    const mass=rows.map(r=>r.mass);
+    const fuel=rows.map(r=>r.fuel);
+    const thrust=rows.map(r=>r.thrust/1000);
+    const drag=rows.map(r=>r.drag/1000);
+    const mach=rows.map(r=>r.mach);
+    const x=rows.map(r=>r.x/1000);
+    const y=rows.map(r=>r.y/1000);
 
     Plotly.newPlot(
         "trajectory",
-        [{
-            x,
-            y,
-            mode:"lines",
-            name:"Rocket"
-        }],
-        layoutBase(
-            "Horizontal Distance (km)",
-            "Altitude (km)"
-        ),
+        [{x,y,mode:"lines",name:"Rocket"}],
+        layoutBase("Horizontal Distance (km)","Altitude (km)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "altitudeChart",
-        [{
-            x:time,
-            y:altitude,
-            mode:"lines",
-            name:"Altitude"
-        }],
-        layoutBase(
-            "Time (s)",
-            "Altitude (km)"
-        ),
+        [{x:time,y:altitude,mode:"lines",name:"Altitude"}],
+        layoutBase("Time (s)","Altitude (km)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "velocityChart",
         [
-            {
-                x:time,
-                y:velocity,
-                mode:"lines",
-                name:"Velocity"
-            },
-            {
-                x:time,
-                y:vx,
-                mode:"lines",
-                name:"Horizontal Velocity"
-            },
-            {
-                x:time,
-                y:vy,
-                mode:"lines",
-                name:"Vertical Velocity"
-            }
+            {x:time,y:velocity,mode:"lines",name:"Velocity"},
+            {x:time,y:vx,mode:"lines",name:"Horizontal Velocity"},
+            {x:time,y:vy,mode:"lines",name:"Vertical Velocity"}
         ],
-        layoutBase(
-            "Time (s)",
-            "Velocity (km/s)"
-        ),
+        layoutBase("Time (s)","Velocity (km/s)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "accelerationChart",
-        [{
-            x:time,
-            y:acceleration,
-            mode:"lines",
-            name:"Total Acceleration"
-        }],
-        layoutBase(
-            "Time (s)",
-            "Acceleration (g)"
-        ),
+        [{x:time,y:acceleration,mode:"lines",name:"Total Acceleration"}],
+        layoutBase("Time (s)","Acceleration (g)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "massChart",
         [
-            {
-                x:time,
-                y:mass,
-                mode:"lines",
-                name:"Total Mass"
-            },
-            {
-                x:time,
-                y:fuel,
-                mode:"lines",
-                name:"Fuel Remaining"
-            }
+            {x:time,y:mass,mode:"lines",name:"Total Mass"},
+            {x:time,y:fuel,mode:"lines",name:"Fuel Remaining"}
         ],
-        layoutBase(
-            "Time (s)",
-            "Mass (kg)"
-        ),
+        layoutBase("Time (s)","Mass (kg)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "forceChart",
         [
-            {
-                x:time,
-                y:thrust,
-                mode:"lines",
-                name:"Thrust"
-            },
-            {
-                x:time,
-                y:drag,
-                mode:"lines",
-                name:"Drag"
-            }
+            {x:time,y:thrust,mode:"lines",name:"Thrust"},
+            {x:time,y:drag,mode:"lines",name:"Drag"}
         ],
-        layoutBase(
-            "Time (s)",
-            "Force (kN)"
-        ),
+        layoutBase("Time (s)","Force (kN)"),
         {responsive:true}
     );
 
     Plotly.newPlot(
         "machChart",
-        [{
-            x:time,
-            y:mach,
-            mode:"lines",
-            name:"Mach"
-        }],
-        layoutBase(
-            "Time (s)",
-            "Mach"
-        ),
+        [{x:time,y:mach,mode:"lines",name:"Mach"}],
+        layoutBase("Time (s)","Mach"),
         {responsive:true}
     );
 
     renderAnimation(rows,params);
 }
 
+function rocketSVG(rotation){
 
-function rocketSVG(angle){
-
-    const svg = `
+    const svg=`
     <svg xmlns="http://www.w3.org/2000/svg"
          width="180"
          height="180"
          viewBox="0 0 180 180">
-
-        <g transform="rotate(${angle} 90 90)">
-
-            <polygon
-                points="90,10 55,58 55,120 125,120 125,58"
-                fill="#e9edf2"
-                stroke="#ffffff"
-                stroke-width="2"/>
-
-            <circle
-                cx="90"
-                cy="62"
-                r="20"
-                fill="#245f96"
-                stroke="#dbeafe"
-                stroke-width="3"/>
-
-            <polygon
-                points="55,95 18,132 55,119"
-                fill="#c52d2d"/>
-
-            <polygon
-                points="125,95 162,132 125,119"
-                fill="#c52d2d"/>
-
-            <rect
-                x="59"
-                y="112"
-                width="62"
-                height="18"
-                fill="#d5d8dd"/>
-
-            <polygon
-                points="68,128 90,170 112,128"
-                fill="#ff9123"/>
-
-            <polygon
-                points="78,128 90,159 102,128"
-                fill="#ffdc50"/>
-
+        <g transform="rotate(${rotation} 90 90)">
+            <polygon points="90,10 55,58 55,120 125,120 125,58"
+                     fill="#e9edf2"
+                     stroke="#ffffff"
+                     stroke-width="2"/>
+            <circle cx="90" cy="62" r="20"
+                    fill="#245f96"
+                    stroke="#dbeafe"
+                    stroke-width="3"/>
+            <polygon points="55,95 18,132 55,119"
+                     fill="#c52d2d"/>
+            <polygon points="125,95 162,132 125,119"
+                     fill="#c52d2d"/>
+            <rect x="59" y="112" width="62" height="18"
+                  fill="#d5d8dd"/>
+            <polygon points="68,128 90,170 112,128"
+                     fill="#ff9123"/>
+            <polygon points="78,128 90,159 102,128"
+                     fill="#ffdc50"/>
         </g>
-    </svg>
-    `;
+    </svg>`;
 
     return "data:image/svg+xml;charset=utf-8,"+
         encodeURIComponent(svg);
 }
 
+function getRocketRotation(rows,index,launchAngle){
+
+    let vx=Number(rows[index].velocity_x);
+    let vy=Number(rows[index].velocity_y);
+
+    let speed=Math.hypot(vx,vy);
+
+    if(speed<1e-9){
+        vx=Math.cos(launchAngle*Math.PI/180);
+        vy=Math.sin(launchAngle*Math.PI/180);
+    }
+
+    let heading=Math.atan2(vy,vx)*180/Math.PI;
+
+    if(heading<0){
+        heading+=360;
+    }
+
+    return (
+        Math.round((heading-90)/5)*5+360
+    )%360;
+}
 
 function renderAnimation(rows,params){
 
-    const x = rows.map(r=>r.x/1000);
-    const y = rows.map(r=>r.y/1000);
+    const x=rows.map(r=>r.x/1000);
+    const y=rows.map(r=>r.y/1000);
 
-    const maxX =
-        Math.max(
-            1,
-            ...x.map(v=>Math.abs(v))
-        );
+    const maxX=Math.max(
+        1,
+        ...x.map(v=>Math.abs(v))
+    );
 
-    const maxY =
-        Math.max(
-            1,
-            ...y
-        );
+    const maxY=Math.max(1,...y);
 
     let xMin;
     let xMax;
@@ -1074,9 +710,7 @@ function renderAnimation(rows,params){
     const yMin=0;
     const yMax=Math.max(maxY*1.15,10);
 
-    const framesCount =
-        Math.min(rows.length,180);
-
+    const framesCount=Math.min(rows.length,180);
     const indices=[];
 
     for(let i=0;i<framesCount;i++){
@@ -1089,70 +723,18 @@ function renderAnimation(rows,params){
         );
     }
 
-    const frameData =
-        indices.map((idx,n)=>{
-
-            let vx=rows[idx].velocity_x;
-            let vy=rows[idx].velocity_y;
-
-            let speed=Math.hypot(vx,vy);
-
-            if(speed<1e-9){
-
-                vx=Math.cos(
-                    params.angle*Math.PI/180
-                );
-
-                vy=Math.sin(
-                    params.angle*Math.PI/180
-                );
-            }
-
-            let heading =
-                Math.atan2(vy,vx)*180/Math.PI;
-
-            if(heading<0)
-                heading+=360;
-
-            heading =
-                (Math.round(heading/5)*5)%360;
-
-            return {
-                name:String(n),
-                data:[
-                    {
-                        x:x.slice(0,idx+1),
-                        y:y.slice(0,idx+1)
-                    }
-                ],
-                layout:{
-                    images:[
-                        {
-                            source:rocketSVG(heading),
-                            x:x[idx],
-                            y:y[idx],
-                            xref:"x",
-                            yref:"y",
-                            sizex:Math.max((xMax-xMin)*0.18,1),
-                            sizey:Math.max((yMax-yMin)*0.18,1),
-                            xanchor:"center",
-                            yanchor:"middle",
-                            sizing:"contain",
-                            layer:"above"
-                        }
-                    ]
-                }
-            };
-        });
-
-    const initialAngle =
-        Math.round(params.angle/5)*5;
-
     const sx=Math.max((xMax-xMin)*0.18,1);
     const sy=Math.max((yMax-yMin)*0.18,1);
 
+    const initialRotation=
+        getRocketRotation(
+            rows,
+            0,
+            params.angle
+        );
+
     const initialImage={
-        source:rocketSVG(initialAngle),
+        source:rocketSVG(initialRotation),
         x:x[0],
         y:y[0],
         xref:"x",
@@ -1165,55 +747,65 @@ function renderAnimation(rows,params){
         layer:"above"
     };
 
-    const animationFrames =
-        frameData.map(f=>({
-            name:f.name,
+    const frames=indices.map((idx,n)=>{
+
+        const rotation=
+            getRocketRotation(
+                rows,
+                idx,
+                params.angle
+            );
+
+        return {
+            name:String(n),
             data:[
                 {
-                    x:f.data[0].x,
-                    y:f.data[0].y,
+                    x:x.slice(0,idx+1),
+                    y:y.slice(0,idx+1),
                     mode:"lines",
-                    line:{
-                        width:4
-                    }
+                    line:{width:4}
                 }
             ],
             traces:[1],
-            layout:f.layout
-        }));
+            layout:{
+                images:[
+                    {
+                        source:rocketSVG(rotation),
+                        x:x[idx],
+                        y:y[idx],
+                        xref:"x",
+                        yref:"y",
+                        sizex:sx,
+                        sizey:sy,
+                        xanchor:"center",
+                        yanchor:"middle",
+                        sizing:"contain",
+                        layer:"above"
+                    }
+                ]
+            }
+        };
+    });
 
-    const steps =
-        indices.map((idx,n)=>({
-            label:rows[idx].time.toFixed(1)+"s",
-            method:"animate",
-            args:[
-                [String(n)],
-                {
-                    frame:{
-                        duration:0,
-                        redraw:true
-                    },
-                    transition:{
-                        duration:0
-                    },
-                    mode:"immediate"
-                }
-            ]
-        }));
+    const steps=indices.map((idx,n)=>({
+        label:rows[idx].time.toFixed(1)+"s",
+        method:"animate",
+        args:[
+            [String(n)],
+            {
+                frame:{duration:0,redraw:true},
+                transition:{duration:0},
+                mode:"immediate"
+            }
+        ]
+    }));
 
     const layout={
         height:680,
         paper_bgcolor:"#020712",
         plot_bgcolor:"#050f20",
-        font:{
-            color:"white"
-        },
-        margin:{
-            l:70,
-            r:30,
-            t:100,
-            b:110
-        },
+        font:{color:"white"},
+        margin:{l:70,r:30,t:100,b:110},
         xaxis:{
             title:"Horizontal Distance (km)",
             range:[xMin,xMax],
@@ -1227,7 +819,6 @@ function renderAnimation(rows,params){
             gridcolor:"rgba(255,255,255,0.10)"
         },
         images:[initialImage],
-
         updatemenus:[
             {
                 type:"buttons",
@@ -1235,7 +826,6 @@ function renderAnimation(rows,params){
                 x:0,
                 y:1.08,
                 showactive:false,
-
                 buttons:[
                     {
                         label:"Play",
@@ -1247,9 +837,7 @@ function renderAnimation(rows,params){
                                     duration:70,
                                     redraw:true
                                 },
-                                transition:{
-                                    duration:0
-                                },
+                                transition:{duration:0},
                                 fromcurrent:false,
                                 mode:"immediate"
                             }
@@ -1265,9 +853,7 @@ function renderAnimation(rows,params){
                                     duration:0,
                                     redraw:false
                                 },
-                                transition:{
-                                    duration:0
-                                },
+                                transition:{duration:0},
                                 mode:"immediate"
                             }
                         ]
@@ -1275,7 +861,6 @@ function renderAnimation(rows,params){
                 ]
             }
         ],
-
         sliders:[
             {
                 active:0,
@@ -1294,8 +879,8 @@ function renderAnimation(rows,params){
         "animation",
         [
             {
-                x:x,
-                y:y,
+                x,
+                y,
                 mode:"lines",
                 line:{
                     width:2,
@@ -1308,24 +893,19 @@ function renderAnimation(rows,params){
                 x:[x[0]],
                 y:[y[0]],
                 mode:"lines",
-                line:{
-                    width:4
-                },
+                line:{width:4},
                 name:"Rocket Path"
             }
         ],
         layout,
-        {
-            responsive:true
-        }
+        {responsive:true}
     ).then(()=>{
         Plotly.addFrames(
             "animation",
-            animationFrames
+            frames
         );
     });
 }
-
 
 $("launch").addEventListener("click",()=>{
 
@@ -1342,60 +922,25 @@ $("launch").addEventListener("click",()=>{
         try{
 
             const params={
-
                 dry:parseFloat($("dry").value),
-
                 fuel0:parseFloat($("fuel").value),
-
                 isp:parseFloat($("isp").value),
-
                 burn:parseFloat($("burn").value),
-
                 pExit:parseFloat($("pexit").value),
-
                 aExit:parseFloat($("aexit").value),
-
                 cd:parseFloat($("cd").value),
-
                 area:parseFloat($("area").value),
-
                 angle:parseFloat($("angle").value),
-
-                target:
-                    parseFloat($("target").value)*1000,
-
-                simTime:
-                    parseFloat($("simtime").value),
-
-                dt:
-                    parseFloat($("dt").value)
+                target:parseFloat($("target").value)*1000,
+                simTime:parseFloat($("simtime").value),
+                dt:parseFloat($("dt").value)
             };
 
-            if(
-                !Number.isFinite(params.dry) ||
-                !Number.isFinite(params.fuel0) ||
-                !Number.isFinite(params.isp) ||
-                !Number.isFinite(params.burn)
-            ){
-                throw new Error(
-                    "Please enter valid rocket parameters."
-                );
-            }
-
-            if(params.dry<=0 || params.fuel0<=0){
-                throw new Error(
-                    "Dry mass and fuel mass must be greater than zero."
-                );
-            }
-
             const result=simulate(params);
-
             const rows=result.rows;
 
             if(!rows.length){
-                throw new Error(
-                    "Simulation produced no data."
-                );
+                throw new Error("Simulation produced no data.");
             }
 
             const maxH=maxOf(rows,"altitude");
@@ -1408,84 +953,52 @@ $("launch").addEventListener("click",()=>{
             const finalV=final.velocity;
             const finalH=final.altitude;
 
-            const orbitV =
-                Math.sqrt(
-                    MU_EARTH/
-                    (R_EARTH+params.target)
-                );
+            const orbitV=Math.sqrt(
+                MU_EARTH/
+                (R_EARTH+params.target)
+            );
 
-            const ratio =
-                finalV/orbitV;
+            const ratio=finalV/orbitV;
 
-            $("maxAltitude").textContent =
-                formatKm(maxH);
+            $("maxAltitude").textContent=formatKm(maxH);
+            $("maxVelocity").textContent=formatVelocity(maxV);
+            $("maxAcceleration").textContent=(maxAcc/G0).toFixed(2)+" g";
+            $("maxQ").textContent=(maxQ/1000).toFixed(1)+" kPa";
 
-            $("maxVelocity").textContent =
-                formatVelocity(maxV);
-
-            $("maxAcceleration").textContent =
-                (maxAcc/G0).toFixed(2)+" g";
-
-            $("maxQ").textContent =
-                (maxQ/1000).toFixed(1)+" kPa";
-
-            $("finalAltitude").textContent =
-                formatKm(finalH);
-
-            $("finalVelocity").textContent =
-                formatVelocity(finalV);
-
-            $("orbitVelocity").textContent =
-                formatVelocity(orbitV);
+            $("finalAltitude").textContent=formatKm(finalH);
+            $("finalVelocity").textContent=formatVelocity(finalV);
+            $("orbitVelocity").textContent=formatVelocity(orbitV);
 
             const orbitStatus=$("orbitStatus");
 
-            if(
-                finalH>=params.target*0.95 &&
-                ratio>=0.95
-            ){
+            if(finalH>=params.target*0.95&&ratio>=0.95){
 
-                orbitStatus.className=
-                    "status success";
-
+                orbitStatus.className="status success";
                 orbitStatus.textContent=
                     "The simulated vehicle reached approximately orbital velocity at the target altitude.";
 
-            }else if(
-                finalH>=params.target*0.95
-            ){
+            }else if(finalH>=params.target*0.95){
 
-                orbitStatus.className=
-                    "status warning";
-
+                orbitStatus.className="status warning";
                 orbitStatus.textContent=
                     "Target altitude reached, but velocity is insufficient for a circular orbit.";
 
             }else{
 
-                orbitStatus.className=
-                    "status error";
-
+                orbitStatus.className="status error";
                 orbitStatus.textContent=
                     "The rocket did not reach the target altitude.";
             }
 
-            $("mdot").textContent =
-                result.mdot.toFixed(2)+" kg/s";
-
-            $("burnResult").textContent =
-                result.burn.toFixed(1)+" s";
-
-            $("impulse").textContent =
+            $("mdot").textContent=result.mdot.toFixed(2)+" kg/s";
+            $("burnResult").textContent=result.burn.toFixed(1)+" s";
+            $("impulse").textContent=
                 (result.impulse/1e9).toFixed(2)+" GN·s";
 
             $("results").classList.remove("hidden");
 
-            $("status").className=
-                "status success";
-
-            $("status").textContent=
-                "Simulation complete.";
+            $("status").className="status success";
+            $("status").textContent="Simulation complete.";
 
             renderCharts(rows,params);
 
@@ -1493,9 +1006,7 @@ $("launch").addEventListener("click",()=>{
 
             console.error(error);
 
-            $("status").className=
-                "status error";
-
+            $("status").className="status error";
             $("status").textContent=
                 "Simulation error: "+error.message;
 
@@ -1503,13 +1014,10 @@ $("launch").addEventListener("click",()=>{
 
             button.disabled=false;
             button.textContent="Launch Simulation";
-
         }
 
     },50);
-
 });
-
 </script>
 
 </body>
