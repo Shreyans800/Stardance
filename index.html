@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocket Launch Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>🚀 Rocket Launch Simulator</h1>
+      <p>Interactive rocket flight simulation with thrust, fuel, gravity, drag and orbital analysis.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>🚀 Rocket Parameters</h2>
+      <label>Dry Mass (kg)<input id="dryMass" type="number" min="1000" max="1000000" step="5000" value="20000"></label>
+      <label>Fuel Mass (kg)<input id="fuelMass" type="number" min="1000" max="1000000" step="5000" value="50000"></label>
+      <label>Specific Impulse (s)<input id="isp" type="number" min="100" max="800" step="20" value="300"></label>
+      <label>Burn Time (s)<input id="burnTime" type="number" min="50" max="1000" step="20" value="150"></label>
+
+      <h2>🔥 Engine / Nozzle</h2>
+      <label>Nozzle Exit Pressure (Pa)<input id="exitPressure" type="number" min="0" max="1000000" step="5000" value="50000"></label>
+      <label>Nozzle Exit Area (m²)<input id="nozzleArea" type="number" min="0.001" max="100" step="0.1" value="1"></label>
+
+      <h2>🌍 Aerodynamics</h2>
+      <label>Drag Coefficient<input id="cd" type="number" min="0.05" max="2" step="0.05" value="0.35"></label>
+      <label>Reference Area (m²)<input id="area" type="number" min="0.1" max="1000" step="1" value="10"></label>
+
+      <h2>🧭 Launch</h2>
+      <label>Launch Angle: <span id="angleValue">90°</span>
+        <input id="launchAngle" type="range" min="0" max="90" step="1" value="90">
+      </label>
+      <small>0° = horizontal | 90° = vertical</small>
+      <label>Target Altitude (km)<input id="targetAltitude" type="number" min="10" max="4000" step="50" value="200"></label>
+      <label>Maximum Simulation Time (s)<input id="simulationTime" type="number" min="30" max="5000" step="30" value="600"></label>
+      <label>Simulation Time Step (s)
+        <select id="dt">
+          <option>0.1</option><option>0.25</option><option>0.5</option><option selected>2</option>
+        </select>
+      </label>
+      <button id="launchButton">🚀 Launch Simulation</button>
+      <div id="status" class="status">Configure parameters and launch.</div>
+    </aside>
+
+    <section class="content">
+      <div id="results" class="hidden">
+        <div class="metrics" id="mainMetrics"></div>
+        <h2>🛰️ Orbital Insertion Analysis</h2>
+        <div class="metrics" id="orbitalMetrics"></div>
+        <div id="orbitalMessage"></div>
+
+        <h2>🚀 Animated Rocket Flight</h2>
+        <div id="trajectoryAnimation" class="chart"></div>
+
+        <h2>🌍 Flight Trajectory</h2>
+        <div id="trajectoryChart" class="chart"></div>
+
+        <h2>📈 Altitude vs Time</h2>
+        <div id="altitudeChart" class="chart"></div>
+
+        <h2>🚀 Velocity vs Time</h2>
+        <div id="velocityChart" class="chart"></div>
+
+        <h2>⚡ Acceleration</h2>
+        <div id="accelerationChart" class="chart"></div>
+
+        <h2>⛽ Mass and Fuel</h2>
+        <div id="massChart" class="chart"></div>
+
+        <h2>🔥 Thrust vs Aerodynamic Drag</h2>
+        <div id="forcesChart" class="chart"></div>
+
+        <h2>💨 Mach Number</h2>
+        <div id="machChart" class="chart"></div>
+
+        <h2>⚙️ Engine Performance</h2>
+        <div class="metrics" id="engineMetrics"></div>
+
+        <button id="csvButton" class="secondary">⬇ Export Simulation CSV</button>
+
+        <hr>
+        <h2>📚 How the Simulation Works</h2>
+        <p>This simulator advances the rocket through small time steps. At every step it calculates atmospheric conditions, thrust, gravity, aerodynamic drag, acceleration, velocity and position.</p>
+
+        <details><summary>1️⃣ Engine Thrust</summary>
+          <p><b>T = ṁVₑ + (pₑ − pₐ)Aₑ</b></p>
+          <p>Exhaust velocity is calculated from <b>Vₑ = Isp × g₀</b>. The pressure term accounts for nozzle exit pressure and changing atmospheric pressure.</p>
+        </details>
+        <details><summary>2️⃣ Gravity</summary>
+          <p><b>g(h) = g₀ × (Rₑ / (Rₑ + h))²</b></p>
+        </details>
+        <details><summary>3️⃣ Atmospheric Density</summary>
+          <p>The model calculates temperature, pressure, density and speed of sound using a simplified piecewise atmosphere.</p>
+          <p><b>ρ = P / (RT)</b></p>
+        </details>
+        <details><summary>4️⃣ Atmospheric Drag</summary>
+          <p><b>D = ½ρv²CᴅA</b></p>
+          <p>The drag vector is opposite to the velocity vector.</p>
+        </details>
+        <details><summary>5️⃣ Launch Angle and Force Components</summary>
+          <p>The angle is measured from the ground: 0° horizontal, 45° above horizontal and 90° vertical.</p>
+          <p><b>Tₓ = T cos(θ), Tᵧ = T sin(θ)</b></p>
+        </details>
+        <details><summary>6️⃣ Net Force</summary>
+          <p><b>Fₓ = Tₓ + Dₓ</b></p>
+          <p><b>Fᵧ = Tᵧ + Dᵧ − mg</b></p>
+        </details>
+        <details><summary>7️⃣ Acceleration</summary>
+          <p><b>aₓ = Fₓ/m, aᵧ = Fᵧ/m</b></p>
+        </details>
+        <details><summary>8️⃣ Velocity Update</summary>
+          <p><b>vₓ,new = vₓ,old + aₓΔt</b></p>
+          <p><b>vᵧ,new = vᵧ,old + aᵧΔt</b></p>
+        </details>
+        <details><summary>9️⃣ Position / Altitude Update</summary>
+          <p><b>xnew = xold + vₓΔt</b></p>
+          <p><b>hnew = hold + vᵧΔt</b></p>
+        </details>
+        <details><summary>🔟 Orbital Velocity</summary>
+          <p><b>vₒᵣᵦ = √(μ/(Rₑ+h))</b></p>
+          <p>This is the ideal circular orbital speed at the selected altitude.</p>
+        </details>
+        <details><summary>🔄 Complete Simulation Loop</summary>
+          <p>Atmosphere → gravity → thrust → velocity → drag → force components → acceleration → velocity update → position update → Mach/dynamic pressure/orbital velocity → store results → repeat.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
