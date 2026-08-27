@@ -15,12 +15,12 @@ html,body{margin:0;padding:0;background:#020712;color:#f1f5f9;font-family:Arial,
 .section h3{font-size:15px;margin:0 0 12px}
 label{display:block;font-size:13px;color:#cbd5e1;margin:13px 0 6px}
 input[type=number],select{width:100%;background:#0d1728;color:#fff;border:1px solid #334155;border-radius:6px;padding:9px;font-size:14px}
-input[type=range]{display:block;width:100%;height:18px;margin:7px 0 0;padding:0;background:transparent;accent-color:#2563eb}
-input[type=range]::-webkit-slider-runnable-track{height:5px;background:#334155;border-radius:5px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-5.5px;border-radius:50%;background:#2563eb;border:0}
-input[type=range]::-moz-range-track{height:5px;background:#334155;border-radius:5px}
-input[type=range]::-moz-range-progress{height:5px;background:#2563eb;border-radius:5px}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#2563eb;border:0}
+input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:18px;margin:7px 0 0;padding:0;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:5px;background:linear-gradient(to right,#2563eb 0%,#2563eb var(--value,100%),#334155 var(--value,100%),#334155 100%)}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:16px;height:16px;margin-top:-5.5px;border-radius:50%;background:#2563eb;border:0;cursor:pointer}
+input[type=range]::-moz-range-track{height:5px;border-radius:5px;background:#334155}
+input[type=range]::-moz-range-progress{height:5px;border-radius:5px;background:#2563eb}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#2563eb;border:0;cursor:pointer}
 .range-value{text-align:center;font-size:14px;color:#cbd5e1;margin-top:7px}
 .range-labels{display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:3px}
 button{width:100%;border:0;border-radius:7px;padding:12px;margin-top:22px;background:#2563eb;color:#fff;font-size:15px;font-weight:bold;cursor:pointer}
@@ -363,9 +363,29 @@ const GAMMA=1.4;
 
 const $=id=>document.getElementById(id);
 
-$("angle").addEventListener("input",function(){
-    $("angleValue").textContent=this.value;
-});
+const angleSlider=$("angle");
+const angleValue=$("angleValue");
+
+function updateAngleSlider(){
+    const min=Number(angleSlider.min);
+    const max=Number(angleSlider.max);
+    const value=Math.min(max,Math.max(min,Number(angleSlider.value)));
+    const percent=((value-min)/(max-min))*100;
+
+    angleSlider.style.setProperty(
+        "--value",
+        percent+"%"
+    );
+
+    angleValue.textContent=value;
+}
+
+angleSlider.addEventListener(
+    "input",
+    updateAngleSlider
+);
+
+updateAngleSlider();
 
 function atmosphere(h){
 
@@ -436,14 +456,12 @@ function simulate(params){
 
     let mass=dry+fuel0;
     let fuel=fuel0;
-
     let h=0;
     let vx=0;
     let vy=0;
     let x=0;
 
     const rows=[];
-
     const ve=isp*G0;
     const mdot=fuel0/burn;
 
@@ -459,7 +477,6 @@ function simulate(params){
     for(let step=0;step<totalSteps;step++){
 
         const t=step*dt;
-
         const atm=atmosphere(h);
 
         let thrust;
@@ -472,7 +489,6 @@ function simulate(params){
             );
 
             fuel-=Math.min(mdot*dt,fuel);
-
             mass=dry+fuel;
 
         }else{
@@ -513,9 +529,7 @@ function simulate(params){
         const thrustY=thrust*tyDir;
 
         const ax=(thrustX+dx)/mass;
-
-        const ay=
-            (thrustY+dy-mass*g)/mass;
+        const ay=(thrustY+dy-mass*g)/mass;
 
         const acc=Math.hypot(ax,ay);
 
@@ -851,7 +865,7 @@ function getRocketRotation(rows,index,launchAngle){
     let vx=Number(rows[index].velocity_x);
     let vy=Number(rows[index].velocity_y);
 
-    let speed=Math.hypot(vx,vy);
+    const speed=Math.hypot(vx,vy);
 
     if(speed<1e-9){
 
@@ -874,9 +888,7 @@ function getRocketRotation(rows,index,launchAngle){
     const snapped=
         Math.round(heading/5)*5;
 
-    return (
-        360-(snapped%360)
-    )%360;
+    return 90-snapped;
 }
 
 function renderAnimation(rows,params){
@@ -1018,12 +1030,8 @@ function renderAnimation(rows,params){
 
     const steps=indices.map(
         (idx,n)=>({
-
-            label:
-                rows[idx].time.toFixed(1)+"s",
-
+            label:rows[idx].time.toFixed(1)+"s",
             method:"animate",
-
             args:[
                 [String(n)],
                 {
@@ -1157,7 +1165,10 @@ function renderAnimation(rows,params){
             }
         ],
         layout,
-        {responsive:true}
+        {
+            responsive:true,
+            displaylogo:false
+        }
     ).then(()=>{
         Plotly.addFrames(
             "animation",
@@ -1254,9 +1265,7 @@ function(){
                 );
             }
 
-            const result=
-                simulate(params);
-
+            const result=simulate(params);
             const rows=result.rows;
 
             if(!rows.length){
@@ -1265,29 +1274,31 @@ function(){
                 );
             }
 
-            const maxH=
-                maxOf(rows,"altitude");
+            const maxH=maxOf(
+                rows,
+                "altitude"
+            );
 
-            const maxV=
-                maxOf(rows,"velocity");
+            const maxV=maxOf(
+                rows,
+                "velocity"
+            );
 
-            const maxAcc=
-                maxOf(rows,"acceleration");
+            const maxAcc=maxOf(
+                rows,
+                "acceleration"
+            );
 
-            const maxQ=
-                maxOf(
-                    rows,
-                    "dynamic_pressure"
-                );
+            const maxQ=maxOf(
+                rows,
+                "dynamic_pressure"
+            );
 
             const final=
                 rows[rows.length-1];
 
-            const finalV=
-                final.velocity;
-
-            const finalH=
-                final.altitude;
+            const finalV=final.velocity;
+            const finalH=final.altitude;
 
             const orbitV=
                 Math.sqrt(
@@ -1295,8 +1306,7 @@ function(){
                     (R_EARTH+params.target)
                 );
 
-            const ratio=
-                finalV/orbitV;
+            const ratio=finalV/orbitV;
 
             $("maxAltitude").textContent=
                 formatKm(maxH);
