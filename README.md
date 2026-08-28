@@ -1,21 +1,21 @@
-# Stardance
+# Rocket Orbit Simulator
+Hi, Welcome!
+This is an interactive rocket trajectory simulator built with HTML, CSS, and Java
 
-# 🚀 Rocket Orbit Simulator
-
-An interactive rocket launch and orbital insertion simulator built with HTML CSS and Java
 TRY IT!
 
 https://shreyans800.github.io/Stardance
 
 ##  Features
+Well, I thought about what I actually wanted to put in the simulation and came up with these:
 
-- Rocket launch simulation
   Parameters:
 - Engine thrust calculation
 - Specific impulse and mass flow rate
 - Fuel consumption and changing rocket mass
-- Atmospheric density, pressure and temperature
+- Atmospheric density, pressure, and temperature
 - Atmospheric drag
+- 
   Also Included:
 - Graphs (mathematical aspect!)
 - A guide as to how the simulation works
@@ -36,12 +36,11 @@ The simulation accounts for:   (Yes, you can edit these!)
 
 The simulator gives a 2D demo of what the trajectory of the rocket would look like.
 Please note that it is NOT accurate, and whilst I tried to include some variables, providing with an actual path is not possible
-
-The trajectory visualization shows the planned flight path as a dotted line, while the completed portion of the flight is represented by a solid line.
+Also, you can see what result it would give if something changed
 
 Anecdotes :
 
-This was quite a journey. Firstly, I studied the major variables(except drag) and found that it was similar to projectile motion, which eventually became the basis for the simulation. The only difficulty was using Plotly and Base64 and IO for the simulation, and also integrating it with java frame-by-frame motions. (Yes, a continuous  pre-built video-like projection would not work, so I had to make it move >16 FPS). The drag insertion in the calculations was solved by YouTube videos (Thanks, Google!) and pretty much that's it. Do enjoy adjusting different variables to see the results change!
+This was quite a journey. Firstly, I studied the major variables(except drag) and found that it was similar to projectile motion, which eventually became the basis for the simulation. The only difficulty was using Plotly and Base64 and IO for the simulation, and also integrating it with Java frame-by-frame motions. (Yes, a continuous  pre-built video-like projection would not work, so I had to make it move >16 FPS). The drag insertion in the calculations was solved by YouTube videos (Thanks, Google!) and pretty much that's it. Do enjoy adjusting different variables to see the results change!
 
   
 
